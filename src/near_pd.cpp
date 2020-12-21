@@ -13,15 +13,24 @@ void ensure_symmetry(arma::mat &X, bool force_symmetry) {
 	}		
 }
 
-arma::mat nearPD_cpp(arma::mat &X, bool force_symmetry) {
+arma::mat nearPD_cpp(arma::mat &X, bool force_symmetry, bool keep_diag, size_t max_iter, bool do_dykstra) {
 
 	ensure_symmetry(X, force_symmetry); 
 
-	/*
-	n = X.ncols; 
+	arma::uword n = X.n_cols; 
 	if(keep_diag)
-		diag_X0 = diag(X); 
-	*/
+		arma::vec diag_X0 = X.diag(); 
+
+	if(do_dykstra)
+		arma::mat D_S(n, n, arma::fill::zeros);
+
+	size_t iter = 0; 
+	bool converged = false; 
+	
+	while(iter < max_iter && !converged) {
+		iter += 1; 
+	}
+
 
 	return X; 
 
@@ -31,7 +40,7 @@ int main() {
 
 	arma::arma_rng::set_seed_random(); 
 	arma::mat X(5, 5, arma::fill::randu);  
-	X = nearPD_cpp(X, true); 
+	X = nearPD_cpp(X, true, true, 10); 
 	X.print(); 
 
 	return 0; 
